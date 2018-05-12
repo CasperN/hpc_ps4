@@ -9,9 +9,9 @@
 // N = dimension
 void parallel_cg_sparse_poisson(double *x, double *b, long N, int mype, int nprocs){
     double *r, *p, *z, rs_old;
-    long size = N / nprocs;
-    long n = sqrt(N);
-
+    long size, n, iter;
+    size = N / nprocs;
+    n = sqrt(N);
     z = malloc(size * sizeof(double));
     r = malloc(size * sizeof(double));
     p = malloc((n + size + n) * sizeof(double));
@@ -26,7 +26,6 @@ void parallel_cg_sparse_poisson(double *x, double *b, long N, int mype, int npro
     memcpy(p, r, size * sizeof(double));            // p = r
     rs_old = parallel_dotp(r, r, N, mype, nprocs);  // rs_old = r.r
 
-    long iter;
     for(iter=0; iter<N; iter++){
         double alpha, rs_new;
         parallel_matvec_OTF(z, p, N, mype, nprocs);             // z = A.p
@@ -36,6 +35,8 @@ void parallel_cg_sparse_poisson(double *x, double *b, long N, int mype, int npro
         rs_new = parallel_dotp(r, r, N, mype, nprocs);          // rs_new = r.r
         if (sqrt(rs_new) < 1.0e-10) break;                      // stopping condition
         parallel_axpy(rs_new/rs_old, p, 1, r, N, mype, nprocs); // p = (rs_new / rs_old) * p + r;
+        rs_old = rs_new;
+        // if(!mype) printf("% 8.3lf\t% 8.3lf\t% 8.3lf\n",alpha,rs_old,rs_new);
     }
 
     if(!mype) printf("CG converged in %ld iterations.\n", iter);
@@ -125,10 +126,8 @@ double parallel_dotp(double *a, double *b, long N, int mype, int nprocs){
     for(long i=0; i < size; i++)
         sum += a[i] * b[i];
 
-    // printf("rank:%d sum:%lf\n", mype, sum);
     MPI_Reduce(&sum,  &global_sum, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
     MPI_Bcast(&global_sum, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-    // if(!mype) printf("global: %lf\n", global_sum);
 
     return global_sum;
 }
@@ -157,7 +156,7 @@ void parallel_axpy(double a, double *x, double b, double *y, long N, int mype, i
 void parallel_fill_b(double *b, long N, int mype, int nprocs){
 
     long size = N/nprocs, n = sqrt(N);
-    
+
     for(long i=0; i<size; i++){
         int ii = mype * size + i;
         b[i] = find_b(ii/n, ii%n, n);

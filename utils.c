@@ -30,20 +30,7 @@ void print_vector(double * x, long N )
 void save_vector(double * x, long N, char * fname )
 {
 	FILE * fp = fopen(fname, "w");
-	long n = sqrt(N);
-	long idx = 0;
-	for( long i = 0; i < n; i++ )
-	{
-		for( long j = 0; j < n; j++ )
-		{
-			fprintf(fp, "%.9le", x[idx]);
-			idx++;
-			if( j != n-1 )
-				fprintf(fp, " ");
-		}
-		if( i != n - 1 )
-			fprintf(fp, "\n");
-	}
+    fwrite(x, sizeof(double), N, fp);
 	fclose(fp);
 }
 

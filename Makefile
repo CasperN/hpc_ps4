@@ -79,13 +79,16 @@ $(program): $(obj) cg_header.h Makefile
 %.o: %.c Makefile cg_header.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
-test: tests.o parallel.o serial.o
+tests.o : tests.c $(obj)
 	$(CC) $(CFLAGS) tests.c parallel.o serial.o -o tests.o
+
+test: tests.o parallel.o serial.o
 	mpiexec -n 5 ./tests.o
 
 
 clean:
-	rm -rf $(program) $(obj) *\.lst cg.dSYM
+	rm -rf $(program) $(obj) *\.lst cg.dSYM tests.o
+
 
 edit:
 	vim -p $(source) cg_header.h

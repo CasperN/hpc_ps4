@@ -2,3 +2,5 @@
 *.o
 *.png
 *.pdf
+cg
+out/*

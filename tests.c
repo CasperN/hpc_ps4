@@ -1,6 +1,6 @@
 #include "cg_header.h"
 
-#define N 120
+#define N 200
 
 void test_dot(int mype, int nprocs){
     double sres, pres, *sy, *py, *sx, *px;

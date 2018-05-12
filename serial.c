@@ -68,6 +68,7 @@ void cg_sparse_poisson(double * x, double * b, long N)
         if( sqrt(rs_new) < 1.0e-10 ) break; // stopping condition
         axpy(rs_new/rs_old, p, 1.0, r, N);  // p = (rs_new / rs_old) * p + r;
 
+        // printf("% 8.3lf\t% 8.3lf\t% 8.3lf\n",alpha,rs_old,rs_new);
         rs_old = rs_new;
     }
 

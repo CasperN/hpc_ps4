@@ -75,7 +75,7 @@ void run_dense(long n)
     printf("Dense Runtime = %.2lf seconds\n", stop-start);
 
     // Save Solution Vector to File
-    save_vector(x,N, "dense.out");
+    save_vector(x,N, "out/dense");
 
     // Free A matrix
     matrix_free(A);
@@ -110,7 +110,7 @@ void run_sparse(long n)
     printf("Sparse Runtime = %.2lf seconds\n", stop-start);
 
     // Save Solution Vector to File
-    save_vector(x,N, "sparse.out");
+    save_vector(x,N, "out/sparse");
 
     // Free vectors
     free(x);
@@ -150,7 +150,7 @@ void run_parallel_sparse(long n, int mype, int nprocs)
 
     if(!mype) printf("Parallel Sparse Runtime = %.2lf seconds\n", stop-start);
 
-    parallel_save_vector(x, N, "psparse.out", mype, nprocs);
+    parallel_save_vector(x, N, "out/parallel", mype, nprocs);
 
     free(x);
     free(b);
