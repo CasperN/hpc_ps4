@@ -3,7 +3,7 @@
 #===============================================================================
 
 COMPILER    = gnu
-MPI         = yes
+MPI         = no
 OPTIMIZE    = yes
 PROFILE     = no
 
@@ -75,9 +75,11 @@ endif
 
 $(program): $(obj) cg_header.h Makefile
 	$(CC) $(CFLAGS) $(obj) -o $@ $(LDFLAGS)
+	mkdir -p out
 
 %.o: %.c Makefile cg_header.h
 	$(CC) $(CFLAGS) -c $< -o $@
+
 
 tests.o : tests.c $(obj)
 	$(CC) $(CFLAGS) tests.c parallel.o serial.o -o tests.o

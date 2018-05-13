@@ -34,7 +34,11 @@ int main(int argc, char* argv[])
         run_sparse(n);
 
     else if (!strcmp(argv[2], "parallel"))
+        #ifdef MPI
         run_parallel_sparse(n, mype, nprocs);
+        #else
+        printf("MPI version not compiled\n");
+        #endif
 
     else if(!mype)
         cli_error();
@@ -121,6 +125,7 @@ void run_sparse(long n)
 // Run Domain Decomposed Parallel CG solve w/MPI
 // where A is assembled on the fly (OTF)
 /////////////////////////////////////////////////////////////////
+#ifdef MPI
 void run_parallel_sparse(long n, int mype, int nprocs)
 {
     double *x, *b, start, stop;
@@ -155,3 +160,4 @@ void run_parallel_sparse(long n, int mype, int nprocs)
     free(x);
     free(b);
 }
+#endif

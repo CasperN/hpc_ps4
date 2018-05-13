@@ -1,5 +1,7 @@
 #include "cg_header.h"
 
+#ifdef MPI
+
 // Parallel Distributed MPI Version of
 // Conjugate Gradient Solver Function for Ax = b
 // where A is the 2D poisson matrix operator that
@@ -172,3 +174,5 @@ void parallel_save_vector(double *vec, long N, char* fname, int mype, int nprocs
     MPI_File_write_at_all(f, start * sizeof(double), vec, size, MPI_DOUBLE, MPI_STATUSES_IGNORE);
     MPI_File_close(&f);
 }
+
+#endif
