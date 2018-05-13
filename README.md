@@ -44,15 +44,15 @@ Problem size        mode                  Runtime (seconds)          Memory Usag
 
 ## Strong Scaling study
 
-Based on a problem size of 1600 x 1600
+Based on a problem size of 1600 x 1600. All converge in 4580 iterations.
 
- Ranks  Memory / Node (MB)  Iterations  Runtime (seconds)
------- ------------------- ----------- ------------------
-    1               48.85         4580             245.62
-    2
-    4
-    8
-   16
+ Ranks  Memory / Node (MB)  Runtime (seconds)
+------ ------------------- ------------------
+    1               48.85              245.62
+    2               48.85              133.19
+    4               24.44               74.11
+    8               12.23               37.25
+   16                6.13               23.28
    32
    64
 
