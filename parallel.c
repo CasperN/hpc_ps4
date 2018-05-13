@@ -35,8 +35,8 @@ void parallel_cg_sparse_poisson(double *x, double *b, long N, int mype, int npro
         rs_new = parallel_dotp(r, r, N, mype, nprocs);          // rs_new = r.r
         if (sqrt(rs_new) < 1.0e-10) break;                      // stopping condition
         parallel_axpy(rs_new/rs_old, p, 1, r, N, mype, nprocs); // p = (rs_new / rs_old) * p + r;
+
         rs_old = rs_new;
-        // if(!mype) printf("% 8.3lf\t% 8.3lf\t% 8.3lf\n",alpha,rs_old,rs_new);
     }
 
     if(!mype) printf("CG converged in %ld iterations.\n", iter);
@@ -89,28 +89,28 @@ void exchange_ghosts(double *w, long n, long size, int mype, int nprocs){
 // N = dimension
 void parallel_matvec_OTF(double *v, double *w, long N, int mype, int nprocs){
 
-    long my_start, n, size;
+    long n, size, global_i;
 
     n = sqrt(N);
     size = N / nprocs;
-    my_start = size * mype;
+    global_i = size * mype;
     memset(v, 0, size * sizeof(double));    // Set solution vector to 0
+
 
     exchange_ghosts(w, n, size, mype, nprocs);
     for(long i=0; i<size; i++){
         double far_left_diag, far_right_diag, main_diag, left_diag, right_diag;
-        long I, j;
+        long column = global_i % n;
 
-        I = my_start + i;
-        j = I % n;
-        // (I/n,j) ~ physical (x,y) coordinates ~ (row, col) in solution matrix
-        left_diag      = j != 0   ? -w[i-1] : 0.0;
-        right_diag     = j != n-1 ? -w[i+1] : 0.0;
-        far_left_diag  = I >= n   ? -w[i-n] : 0.0; // row > 0
-        far_right_diag = I <  N-n ? -w[i+n] : 0.0; // row < n
+        // (global_i / n, column) ~ physical (x,y) coordinates
+        left_diag      = column   != 0   ? -w[i-1] : 0.0;
+        right_diag     = column   != n-1 ? -w[i+1] : 0.0;
+        far_left_diag  = global_i >= n   ? -w[i-n] : 0.0;
+        far_right_diag = global_i <  N-n ? -w[i+n] : 0.0;
         main_diag = 4 * w[i];
 
         v[i] = far_left_diag + left_diag + main_diag + right_diag + far_right_diag;
+        global_i++;
     }
 }
 
@@ -141,10 +141,8 @@ double parallel_dotp(double *a, double *b, long N, int mype, int nprocs){
 void parallel_axpy(double a, double *x, double b, double *y, long N, int mype, int nprocs){
     long size = N / nprocs;
 
-    for(long i=0; i<size; i++){
+    for(long i=0; i<size; i++)
         x[i] = a * x[i] + b * y[i];
-    }
-
 }
 
 

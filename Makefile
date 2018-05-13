@@ -84,6 +84,7 @@ tests.o : tests.c $(obj)
 
 test: tests.o parallel.o serial.o
 	mpiexec -n 5 ./tests.o
+	mpiexec -n 4 ./tests.o
 
 
 clean:

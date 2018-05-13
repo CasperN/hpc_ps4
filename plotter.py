@@ -9,5 +9,7 @@ if len(sys.argv) != 2:
 x = np.fromfile(sys.argv[1], np.float64)
 n = int(len(x) **.5)
 x = x.reshape((n,n))
+
 plt.imshow(x)
-plt.show()
+plt.colorbar(ticks=np.linspace(x.min(), x.max(), 5))
+plt.savefig("picture.png")
