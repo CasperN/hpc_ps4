@@ -31,12 +31,12 @@ will run the solver for a 75 x 75 physical domain size in serial.
 ## Serial Experimentation
 Run on 1 thread and node on Midway
 
-| Problem size | mode | Runtime | Memory Usage|
-|---|---|---|---|
-| 75x75         | `serial_sparse` |
-| 75x75         | `serial_dense`  |
-| 10,000x10,000 | `serial_sparse` |
-| 10,000x10,000 | `serial_dense`  |
+    Problem size        mode                  Runtime (seconds)          Memory Usage (MB)
+    ---------------     ---------------     -------------------     ----------------------
+    75 x 75             `serial_sparse`                    0.02                       0.21
+    75 x 75             `serial_dense`                     9.19                     241.61
+    10 000 x 10 000     `serial_sparse`                     ---                   3 814.70
+    10 000 x 10 000     `serial_dense`                      ---      17 592 186 029 767.20
 
 ![75x75 Solution](picture.png)
 
@@ -45,3 +45,4 @@ Run on 1 thread and node on Midway
 ## Strong Scaling study
 
 ## Weak Scaling Study
+Based on `sinteractive` experimentation, a problem size of 600 take ~11.95 seconds for 1 rank.

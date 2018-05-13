@@ -37,7 +37,7 @@ int main(int argc, char* argv[])
         #ifdef MPI
         run_parallel_sparse(n, mype, nprocs);
         #else
-        printf("MPI version not compiled\n");
+        printf("Fatal: MPI version not compiled\n");
         #endif
 
     else if(!mype)
