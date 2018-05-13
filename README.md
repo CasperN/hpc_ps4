@@ -44,6 +44,19 @@ Problem size        mode                  Runtime (seconds)          Memory Usag
 
 ## Strong Scaling study
 
+Based on a problem size of 1600 x 1600
+
+ Ranks  Memory / Node (MB)  Iterations  Runtime (seconds)
+------ ------------------- ----------- ------------------
+    1
+    2
+    4
+    8
+   16
+   32
+   64
+
+
 
 ## Weak Scaling Study
 Based on `sinteractive` experimentation, a problem size of 600 take ~11.95 seconds for 1 rank.
@@ -55,4 +68,5 @@ Problem size    Ranks   Runtime (seconds)   Memory / Node (MB)  Iterations
 1200 x 1200         4               27.59                13.75       3 550
 1700 x 1700         8               47.09                13.81       4 609
 2400 x 2400        16               86.63                13.77       6 478
-3400 x 3400        32
+3400 x 3400        32              144.23                13.83       9 128
+4800 x 4800        64              213.99                13.81      12 566
