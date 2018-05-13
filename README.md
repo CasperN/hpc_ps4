@@ -48,7 +48,7 @@ Based on a problem size of 1600 x 1600
 
  Ranks  Memory / Node (MB)  Iterations  Runtime (seconds)
 ------ ------------------- ----------- ------------------
-    1
+    1               48.85         4580             245.62
     2
     4
     8
@@ -64,7 +64,7 @@ Based on `sinteractive` experimentation, a problem size of 600 take ~11.95 secon
 Problem size    Ranks   Runtime (seconds)   Memory / Node (MB)  Iterations
 ------------   ------  ------------------  ------------------- -----------
 600 x 600           1               11.95                13.74       1 825
-850 x 850           2               17.93                27.59       2 523
+850 x 850           2               17.93                13.79       2 523
 1200 x 1200         4               27.59                13.75       3 550
 1700 x 1700         8               47.09                13.81       4 609
 2400 x 2400        16               86.63                13.77       6 478
